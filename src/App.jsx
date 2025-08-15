@@ -4,6 +4,7 @@ import { generateClient } from "aws-amplify/api";
 
 import { listTodos } from "./graphql/queries";
 import { createTodo, updateTodo, deleteTodo } from "./graphql/mutations";
+import { signOut } from "aws-amplify/auth";
 
 const client = generateClient();
 
@@ -90,10 +91,17 @@ function App() {
               />
             </svg>
           </div>
+
           <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
             My Todo App
           </h1>
           <p className="text-gray-500 text-lg">Stay organized and productive</p>
+          <button
+            onClick={signOut}
+            className="bg-red-400 px-4  py-2 rounded mt-5 text-white "
+          >
+            Sign out
+          </button>
         </div>
 
         {/* Add Todo Form */}
