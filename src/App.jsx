@@ -18,13 +18,25 @@ function App() {
   }, []);
 
   const fetchTodos = async () => {
-    try {
-      const result = await client.graphql({ query: listTodos });
-      setTodos(result.data.listTodos.items);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  let allTodos = [];
+  let nextToken = null;
+
+  try {
+    do {
+      const result = await client.graphql({
+        query: listTodos,
+        variables: { limit: 100, nextToken },
+      });
+      allTodos = allTodos.concat(result.data.listTodos.items);
+      nextToken = result.data.listTodos.nextToken;
+    } while (nextToken);
+
+    setTodos(allTodos);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
